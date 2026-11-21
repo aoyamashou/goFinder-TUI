@@ -26,6 +26,12 @@ curl -fsSL https://raw.githubusercontent.com/aoyamashou/goFinder-TUI/main/instal
 go install github.com/aoyamashou/goFinder-TUI/cmd/gf@latest
 ```
 
+## 在 Orca 中使用
+
+如果想在 Orca 中使用的话，在设置中参考这样设置就可以了：
+
+![Orca Quick Command 设置](assets/orca-quick-command.jpg)
+
 ## 键位
 
 | 功能 | 快捷键 |
