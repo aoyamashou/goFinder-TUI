@@ -1,112 +1,50 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/wordmark-dark.png">
-    <img src="docs/images/wordmark-light.png" width="240" alt="goFinder.">
-  </picture>
-</p>
+# goFinder-TUI (`gf`)
 
-# goFinder
-
-官网：[gofinder.ryou.im](https://gofinder.ryou.im)
-
-> 基于 [MyGo](https://mygo.egoist.dev/docs) 打造的Finder替代品，因为是狗大V做的Finder，中文名为狗方德。
-
-goFinder 是一个针对键盘鼠标同时使用的用户的，以简洁、高速、低资源占用为设计目标的，将原生访达（Finder）和 [Yazi](https://github.com/sxyazi/yazi) 文件管理器的长处融在了一起的文件管理器。
-
-简单理解就是：goFinder是改用Yazi为主体的Finder，或者说，是加上了鼠标适配，脱离了终端的Yazi。全程由官方直连的Opus 5.5编写，编码水平有保证，连这个Readme也是Opus给你写的，原汁原味。
-
-<p align="center"><img src="docs/images/screenshot.png" alt="goFinder 界面：侧边栏、上下双栏，下方窗格预览图片，底部两行快捷键提示"></p>
+> 为了在 **Orca** 内部终端中使用，从 [goFinder](https://github.com/aoyamashou/goFinder) 的 GUI 版本派生出的纯终端 TUI 文件管理器，**快捷键与操作逻辑与 goFinder 保持一致**。
 
 ## 特点
 
-- 极小体积，极低内存占用，极低CPU占用，一切追求实用性。
-- AI友好，按a键，启动你的 AI Agent。
-- **Yazi 式文件列表**：上级｜当前｜预览三栏并排，光标停在那里，就预览那里。极速，0延迟，0等待。
-- **极速过滤**：按 `f` 后边打字边过滤，1 万个文件也没有延迟。
-- **过滤时支持拼音首字母搜索**：比如，输入 `mxcx` 就能找到「模型查询.txt」。
-- **单键快捷键**：`c` 复制、`v` 粘贴、`d` 移到废纸篓、`n` 新建文件夹、`↩` 重命名……常用操作都只要按一个键。所有的快捷键基于英语四级水平而设定，不需努力就能记住，且按 `?` 能打开速查表。
-- **不用终端**：Yazi 的操作方式，跑在一个真正的 macOS 窗口里，不依赖 TUI。
-- **方向键导航**：不需要去习惯Yazi原本的vim键位。`↑↓` 移动，`→` 进入文件夹，`←` 返回上级。习惯 Vim 的话，也可以在设置 › 快捷键里打开 `h/j/k/l`，方向键照样能用。
-- **和原生macOS一致的鼠标操作**
-- **空格快速查看**：调用系统的 Quick Look，PDF、Office 文稿、视频、图片都能直接看。
-- **撤销文件操作**：按 `⌘Z` 撤销最近的删除、重命名、同一磁盘内的移动、复制或新建，恢复时不会覆盖已有文件。
-- **操作提示**：复制、剪切、移到废纸篓等操作后，窗口底部会短暂显示一条提示，不用盯着状态栏确认。
-
-- **访达侧边栏移植**
-- **多空格布局**  左右或上下双栏
-- **暂存架**，用于整理文件时暂存
-- **Workspace（多工作区切换）**
-- **按模板新建文件**
-- **新建文件夹时可选初始化**：勾选后自动初始化 Git 仓库、创建 AGENTS.md / CLAUDE.md、项目级 skills 目录
-- **包和 ZIP 直接打开**：`.framework`、`.xcodeproj` 等包和 ZIP 像访达一样直接打开（ZIP 由系统解压到旁边），右键「显示包内容」可以进去看，ZIP 内只读
-- **安装应用**：打开下载文件夹或 DMG 里的 `.app` 时，可以直接复制到「应用程序」，可选解除隔离
-- **支持Git 状态标记**
-
-
-## 性能
-
-| 项目         | goFinder                      | 访达                                   |
-| ---------- | ----------------------------- | ------------------------------------ |
-| 启动时间       | 冷启动 530–550 ms                | 不存在冷启动，呼出一个新窗口 294–312 ms（首次 695 ms） |
-| 空闲时内存占用    | **58 MB**                     | 183 MB                               |
-| 空闲 CPU占用   | **0.08 s（约 0.1%）**            | 0.22 s（约 0.4%）                       |
-| 遍历 1 万个文件  | 读取并排序 25 ms，进入目录到画出第一帧约 45 ms | 新窗口出现要 311–547 ms                    |
-| 万个文件 CPU占用 | **约 0.4 s**（从启动到显示的全过程）       | 1.3–2.1 s（打开后 10 秒内）                 |
-| 万个文件内存占用   | **71–72 MB**                  | 约 240 MB                             |
-
-
-
-- 访达因为是系统应用，强制自动开启，不存在冷启动。故goFinder 冷启动比访达开热启动慢约 0.2 秒。
-- 内存占用只有访达的约 1/3。
-- 处理 1 万个文件用的 CPU 只有访达的 1/4 到 1/5。
-
-
-界面丑是因为一切从省出发：不用 WebView，不加载系统文件图标（用本机的 Nerd Font 字形代替），只给屏幕上看得到的文件夹开文件监听，Quick Look 等光标停下来才生成预览。没有外部依赖，插件只有2个，一个字体，一个自动更新。
+- **与 goFinder 一致的键位**：保留方向键导航与单键操作习惯，从 GUI 切到终端零学习成本；也支持开启 Vim 键位（`h/j/k/l`）。
+- **Yazi 式三栏布局**：上级目录｜当前目录｜实时预览并排显示，移动光标即刻预览文本、图片与目录内容。
+- **极速过滤与拼音首字母搜索**：按 `f` 边打字边过滤，支持中文拼音首字母（如输入 `mxcx` 匹配 `模型查询.txt`）。
+- **安全文件操作**：删除默认移到系统废纸篓，不直接永久删除。
+- **纯 Go 无 cgo**：轻量、启动快、低资源占用，支持 macOS 与 Linux。
 
 ## 安装
 
-- 下载：在 [官网](https://gofinder.ryou.im) 或 [Releases](https://github.com/aoyamashou/goFinder/releases) 下载 `.dmg`，把 goFinder 拖进「应用程序」文件夹。Apple Silicon 选 `arm64`，Intel Mac 选 `amd64`（Intel 版目前只在 Rosetta 下验证过，欢迎反馈）。启动时，goFinder 会自动检查更新。
-- 字体：列表图标用的是 `JetBrainsMono Nerd Font Mono`。设置里可以一键下载；不装也能用，图标会退回文字符号。
-- 签名：目前用的是自签证书，没有经过 Apple 公证。第一次打开时如果被系统拦下，到「系统设置 › 隐私与安全性」里点「仍要打开」。
-- 解除隔离：如果提示「已损坏」或「无法打开」，可以先解除下载隔离（下载的 `.dmg` 也可以先这样处理再打开）：
-  ```bash
-  sudo xattr -r -d com.apple.quarantine /Applications/goFinder.app
-  ```
+### 一键安装脚本（推荐）
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/aoyamashou/goFinder-TUI/main/install.sh | sh
+```
+
+脚本会自动识别系统（macOS / Linux）与架构（`arm64` / `amd64`），从 GitHub Releases 下载最新版本的 `gf` 并安装到 `/usr/local/bin` 或 `~/.local/bin`。
+
+### 通过 Go 安装
+
+```bash
+go install github.com/aoyamashou/goFinder-TUI/cmd/gf@latest
+```
 
 ## 键位
 
-| 功能                               | goFinder单键              | MacOS原生风格的第二键位（可选 ）        |
-| -------------------------------- | ----------------------- | -------------------------- |
-| 移动 / 打开 / 上级                     | `↑↓` / `→` / `←`        | — / `⌘↓` / `⌘↑`            |
-| 切换窗格（单栏时进出侧边栏）                   | `Tab`                   | —                          |
-| 过滤（支持拼音首字母）                      | `f`                     | —                          |
-| 快速查看                             | `Space`                 | —                          |
-| 复制 / 复制路径 / 剪切 / 粘贴              | `c` / `c c` / `x` / `v` | `⌘C` / `⌥⌘C` / `⌘X` / `⌘V` |
-| 移到废纸篓（先确认）                       | `d`                     | `⌘⌫`                       |
-| 新建文件夹 / 新建文件（按模板）                | `n` / `n n`             | `⇧⌘N` / `⌘N`               |
-| 重命名                              | `↩`、`r`                 | —                          |
-| 显示隐藏文件 / 排序                      | `.` / `,`               | `⇧⌘.` / —                  |
-| 前往（输入路径）                         | `g`                     | `⌘L`                       |
-| 回到起点（右键文件夹「设为起点」，双栏各自记忆，默认 Home） | `` ` ``                 | —                          |
-| 在终端打开 / 在这里打开 Agent              | `t` / `a`               | `⌥⌘T` / `⌥⌘A`              |
-| 在编辑器中打开 / 加入暂存架 / 收藏当前文件夹        | `e` / `s` / `s s`       | — / `⌥⌘S` / —              |
-| 工作区对话框 / 切换工作区                   | `w` / `1`–`9`、`[` `]`   | — / `⌘1-9`                 |
-| 后退 / 前进                          | 鼠标侧键                    | `⌘[` / `⌘]`                |
-| 撤销文件操作                           | —                       | `⌘Z`                       |
-| 速查表                              | `?`                     | —                          |
+| 功能 | 快捷键 |
+| --- | --- |
+| 移动 / 进入 / 返回上级 | `↑↓` / `→` / `←` |
+| 跳到顶部 / 底部 | `Home` / `End` |
+| 后退 / 前进 | `Alt+←` / `Alt+→` |
+| 过滤（支持拼音首字母） | `f` |
+| 选中 / 全选 / 取消选择 | `Space` / `Ctrl+A` / `Esc` |
+| 复制 / 复制路径 / 剪切 / 粘贴 | `c` / `c c` / `x` / `v` |
+| 重命名 | `Enter` |
+| 新建文件夹 / 新建文件 | `n` / `n n` |
+| 移到废纸篓 | `d` |
+| 在编辑器中打开 / 系统默认打开 | `e` / `o` |
+| 显示隐藏文件 / 排序方式 / 刷新 | `.` / `,` / `Ctrl+R` |
+| 前往路径 / 回到起点 / 主目录 | `g` / `` ` `` / `Alt+H` |
+| 预览向上 / 向下滚动 | `PageUp` (`Ctrl+U`) / `PageDown` (`Ctrl+D`) |
+| 速查表 | `?` |
+| 退出 / 退出（不切换目录） | `q` / `Shift+Q` |
 
-- 只有 `c c`、`n n`、`s s` 是同一个键连按两下（400 ms 内），其余都是单键。
-- 打开 Vim 键位后，`j/k` 上下移动，`h` 返回上级，`l` 打开，方向键仍然可用。
-
-
-- 所有键位都可以在设置（`⌘,`）的「快捷键」页修改。
-
-## 配置
-
-数据目录在 `~/Library/Application Support/goFinder/`：
-
-- `config.json`：终端和编辑器、是否显示隐藏文件、外观、Vim 键位（`vimKeys`）、新建文件夹后的初始化（`newFolderGit`、`newFolderAgentFiles`、`newFolderSkills`）、右键菜单（`contextMenu`、`blankMenu`）、Agent、自定义 shell 命令（`commands`，可以用 `{path}`、`{selection}` 占位）。
-- `keymap.json`：按动作 ID 覆盖快捷键，例如 `{"trash": ["Cmd+Alt+Backspace"]}`。动作 ID 见 `actions.go`，或在速查表里搜索。
-- `templates/`：新建文件用的模板，每个文件就是一个模板。
-- `shelf.json`：暂存架；`workspaces/`：保存的 Workspace。
-- 收藏夹：有 iCloud 云盘时存在 `iCloud Drive/goFinder/favorites.json`，在多台 Mac 之间同步。
+- `c c`、`n n` 为同键双击。
+- 支持通过 `keymap.json` 按动作 ID 覆盖默认快捷键（动作 ID 见 [tui/actions.go](tui/actions.go)）。
